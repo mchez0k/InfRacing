@@ -6,9 +6,11 @@ namespace Core.Networking
 {
     public class ConnectionManager : MonoBehaviour, IInitializable
     {
+        [HideInInspector] public bool IsInitialized { get; private set; }
         public void Initialize()
         {
             Connect();
+            IsInitialized = true;
         }
 
         public void Connect()

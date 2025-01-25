@@ -13,12 +13,14 @@ namespace Core.Systems
 
         private void Awake()
         {
+            DataProvider.Initialize();
             InitializeManagers();
             LoadSceneAsync();
         }
 
         private void InitializeManagers()
         {
+            Debug.Log(name);
             foreach (var manager in managers)
             {
                 if (manager != null &&
