@@ -311,11 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de873424361983644957a156eaf3f8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneReference:
-    m_AssetGUID: 49848bbc89c6b0f42b5ebca92c35539b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
   managers:
   - {fileID: 1527025529}
 --- !u!4 &968457795
@@ -362,6 +357,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ecdbe6a532976e47844f3485a45d633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneReference:
+    m_AssetGUID: 49848bbc89c6b0f42b5ebca92c35539b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!4 &1527025530
 Transform:
   m_ObjectHideFlags: 0

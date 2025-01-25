@@ -7,13 +7,13 @@ namespace Core.Utility
     /// </summary>
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static T _instance;
-        public static T Instance => _instance;
-        [SerializeField] private bool _isDontDestroyOnLoad;
+        private static T instance;
+        public static T Instance => instance;
+        [SerializeField] private bool isDontDestroyOnLoad;
 
         protected virtual void Awake()
         {
-            if (_instance != null && _instance != this)
+            if (instance != null && instance != this)
             {
                 Destroy(gameObject);
             }
@@ -21,7 +21,7 @@ namespace Core.Utility
             var count = instances.Length;
             if (count == 1)
             {
-                _instance = instances[0];
+                instance = instances[0];
             }
             else if (count > 1)
             {
@@ -29,11 +29,11 @@ namespace Core.Utility
                 {
                     Destroy(instances[i]);
                 }
-                _instance = instances[0];
+                instance = instances[0];
             }
             else
             {
-                _instance = new GameObject($"({nameof(Singleton<T>)}){typeof(T)}").AddComponent<T>();
+                instance = new GameObject($"({nameof(Singleton<T>)}){typeof(T)}").AddComponent<T>();
                 Debug.LogWarning($"Created a new '{typeof(T)}' ");
             }
 
@@ -42,10 +42,10 @@ namespace Core.Utility
 
         private void SetDestroyOnLoad()
         {
-            if (_isDontDestroyOnLoad)
+            if (isDontDestroyOnLoad)
             {
                 transform.SetParent(null);
-                DontDestroyOnLoad(_instance.gameObject);
+                DontDestroyOnLoad(instance.gameObject);
             }
         }
     }

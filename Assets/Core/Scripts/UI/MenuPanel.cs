@@ -1,3 +1,4 @@
+using Core.Networking;
 using Core.Systems;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +10,12 @@ namespace Core.UI
         [SerializeField] private Button playButton;
         [SerializeField] private Button garageButton;
 
-        public InfoPanel infoPanel;
+        private InfoPanel infoPanel;
 
         public override void Initialize()
         {
-            //playButton.onClick.AddListener();
+            playButton.onClick.AddListener(PressPlay);
+
             //garageButton.onClick.AddListener();
 
             infoPanel = EntryPoint
@@ -25,6 +27,21 @@ namespace Core.UI
         {
             base.Open();
             infoPanel.Open();
+        }
+
+        public void PressPlay()
+        {
+            playButton.interactable = false;
+
+            var lobbyNetwork = EntryPoint
+                .Get<LobbyNetworkManager>();
+            lobbyNetwork.OnJoinRoomFailedEvent.AddListener(RestoreButton);
+            lobbyNetwork.JoinOrCreateRoom();
+        }
+
+        private void RestoreButton()
+        {
+            playButton.interactable = true;
         }
     }
 }

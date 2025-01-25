@@ -12,33 +12,35 @@ namespace Core.Systems
     /// </summary>
     public class EntryPoint : Singleton<EntryPoint>
     {
-        [SerializeField] private bool _isFindOnAwake = false;
-        [SerializeField] List<MonoBehaviour> _components = new(32); 
-        private Dictionary<Type, IInitializable> _cachedComponents = new();
+        [SerializeField] private bool isFindOnAwake = false;
+        [SerializeField] List<MonoBehaviour> components = new(32); 
+        private Dictionary<Type, IInitializable> cachedComponents = new();
 
         protected override void Awake()
         {
             base.Awake();
-            if(!_isFindOnAwake) return;
-            var components = FindObjectsOfType<MonoBehaviour>().Where(x => x is IInitializable && !_components.Contains(x));
-            foreach (var component in components)
+            if(!isFindOnAwake) return;
+            var foundedComponents = FindObjectsOfType<MonoBehaviour>().Where(x => x is IInitializable && !components.Contains(x));
+            foreach (var component in foundedComponents)
             {
-                if(!_components.Contains(component))
-                    _components.Add(component);
+                if(!components.Contains(component))
+                    components.Add(component);
             }
         }
         
         private IEnumerator Start()
         {
-            foreach (var item in _components)
+            foreach (var item in components)
             {
                 if (item is IInitializable initializer)
                 {
+                    Debug.Log($"{item.name} + {initializer.IsInitialized}");
                     if (initializer.IsInitialized)
                         continue;
                     initializer.Initialize();
-                    if(!initializer.IsInitialized)
-                        yield return new WaitUntil(() => initializer.IsInitialized);
+                    Debug.Log("Initialized " + item.name);
+                    //if(!initializer.IsInitialized)
+                    //    yield return new WaitUntil(() => initializer.IsInitialized);
                 }
                 else
                 {
@@ -56,30 +58,30 @@ namespace Core.Systems
         /// <returns>The first component of type T, or null if none is found.</returns>
         public static T Get<T>() where T : MonoBehaviour, IInitializable
         {
-            if (Instance._cachedComponents.TryGetValue(typeof(T), out var component))
+            if (Instance.cachedComponents.TryGetValue(typeof(T), out var component))
             {
                 return (T)component;
             }
             else
             {
-                var c = Instance._components.OfType<T>().FirstOrDefault();
-                if (c != null) Instance._cachedComponents.Add(typeof(T), c);
+                var c = Instance.components.OfType<T>().FirstOrDefault();
+                if (c != null) Instance.cachedComponents.Add(typeof(T), c);
                 return c;
             }
         }
 
         private void OnValidate()
         {
-            for (int i = _components.Count - 1; i >= 0; i--)
+            for (int i = components.Count - 1; i >= 0; i--)
             {
-                var component = _components[i];
+                var component = components[i];
                 if (component is not IInitializable)
-                    _components.Remove(component);
+                    components.Remove(component);
                 foreach (var nextItem in component.gameObject.GetComponents(typeof(MonoBehaviour)))
                 {
-                    if (nextItem is IInitializable && !_components.Contains(nextItem))
+                    if (nextItem is IInitializable && !components.Contains(nextItem))
                     {
-                        _components.Add(nextItem as MonoBehaviour);
+                        components.Add(nextItem as MonoBehaviour);
                     }
                 }
             }

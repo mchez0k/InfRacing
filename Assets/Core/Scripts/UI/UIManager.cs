@@ -13,13 +13,13 @@ namespace Core.UI
     public class UIManager : MonoBehaviour, IInitializable
     {
         [field: SerializeField] public Canvas Canvas { get; private set; }
-        [SerializeField] private PanelBase[] _panels;
-        [SerializeField] private int _firstPanelIndex;
-        private readonly Dictionary<Type, PanelBase> _panelsDictionary = new();
-        private readonly LinkedList<Type> _previousPanels = new();
-        private Type _currentPanel;
-        public Type CurrentPanel => _currentPanel;
-        public Type PreviousPanel => _previousPanels.Count == 0 ? null : _previousPanels.Last.Value;
+        [SerializeField] private PanelBase[] panels;
+        [SerializeField] private int firstPanelIndex;
+        private readonly Dictionary<Type, PanelBase> panelsDictionary = new();
+        private readonly LinkedList<Type> previousPanels = new();
+        private Type currentPanel;
+        public Type CurrentPanel => currentPanel;
+        public Type PreviousPanel => previousPanels.Count == 0 ? null : previousPanels.Last.Value;
         public bool IsInitialized { get; private set; }
 
         private InfoPanel infoPanel;
@@ -32,49 +32,50 @@ namespace Core.UI
             WarmupUI();
             DisableAll();
             OpenLobby();
+            IsInitialized = true;
         }
 
         public void Open(Type type, bool savePrevious = true)
         {
-            if (!_panelsDictionary.ContainsKey(type) || _currentPanel == type)
+            if (!panelsDictionary.ContainsKey(type) || currentPanel == type)
                 return;
             DisableAll();
             if (savePrevious)
-                _previousPanels.AddLast(_currentPanel);
-            _currentPanel = type;
-            _panelsDictionary[_currentPanel].Open();
+                previousPanels.AddLast(currentPanel);
+            currentPanel = type;
+            panelsDictionary[currentPanel].Open();
         }
 
         public void Back()
         {
-            if (_previousPanels.Last == null)
+            if (previousPanels.Last == null)
                 return;
             DisableAll();
-            _currentPanel = _previousPanels.Last.Value;
-            _previousPanels.RemoveLast();
-            _panelsDictionary[_currentPanel].Open();
+            currentPanel = previousPanels.Last.Value;
+            previousPanels.RemoveLast();
+            panelsDictionary[currentPanel].Open();
         }
 
 
         public void ClearPrevious(bool all = false)
         {
             if (all)
-                _previousPanels.Clear();
+                previousPanels.Clear();
             else
-                _previousPanels.RemoveLast();
+                previousPanels.RemoveLast();
         }
 
         public T GetPanel<T>() where T : PanelBase
         {
-            if (!_panelsDictionary.ContainsKey(typeof(T)))
+            if (!panelsDictionary.ContainsKey(typeof(T)))
                 return null;
-            return _panelsDictionary[typeof(T)] as T;
+            return panelsDictionary[typeof(T)] as T;
         }
 
         public void SetPrevPanel(Type panel)
         {
-            _previousPanels.Remove(_previousPanels.Last);
-            _previousPanels.AddLast(panel);
+            previousPanels.Remove(previousPanels.Last);
+            previousPanels.AddLast(panel);
         }
 
         #endregion
@@ -83,9 +84,9 @@ namespace Core.UI
 
         private void InitializePanels()
         {
-            foreach (var panel in _panels)
+            foreach (var panel in panels)
             {
-                _panelsDictionary[panel.GetType()] = panel;
+                panelsDictionary[panel.GetType()] = panel;
                 panel.Initialize();
                 panel.gameObject.SetActive(true);
             }
@@ -97,7 +98,7 @@ namespace Core.UI
 
         private void DisableAll()
         {
-            foreach (var panel in _panels)
+            foreach (var panel in panels)
             {
                 panel.Close();
             }
