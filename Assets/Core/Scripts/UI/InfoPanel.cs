@@ -1,4 +1,4 @@
-using Core.Systems;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +13,7 @@ namespace Core.UI
 
         public override void Initialize()
         {
-            nickname.text = DataProvider.GetPlayerName();
+            nickname.text = PhotonNetwork.NickName;
             //settingButton.onClick.AddListener();
         }
     }

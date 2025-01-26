@@ -34,13 +34,12 @@ namespace Core.Systems
             {
                 if (item is IInitializable initializer)
                 {
-                    Debug.Log($"{item.name} + {initializer.IsInitialized}");
                     if (initializer.IsInitialized)
                         continue;
                     initializer.Initialize();
                     Debug.Log("Initialized " + item.name);
-                    //if(!initializer.IsInitialized)
-                    //    yield return new WaitUntil(() => initializer.IsInitialized);
+                    if(!initializer.IsInitialized)
+                        yield return new WaitUntil(() => initializer.IsInitialized);
                 }
                 else
                 {

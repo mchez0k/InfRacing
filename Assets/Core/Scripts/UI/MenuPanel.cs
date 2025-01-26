@@ -1,5 +1,6 @@
 using Core.Networking;
 using Core.Systems;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ namespace Core.UI
 {
     public class MenuPanel : PanelBase
     {
+        [SerializeField] private TextMeshProUGUI onlineOnfo;
         [SerializeField] private Button playButton;
         [SerializeField] private Button garageButton;
 
@@ -27,6 +29,12 @@ namespace Core.UI
         {
             base.Open();
             infoPanel.Open();
+            RestoreButton();
+        }
+
+        public void UpdateOnlineInfo(int rooms, int players)
+        {
+            onlineOnfo.text = $"Total rooms: {rooms}\nTotal players: {players}";
         }
 
         public void PressPlay()

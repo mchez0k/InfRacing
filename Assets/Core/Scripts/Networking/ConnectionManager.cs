@@ -33,6 +33,7 @@ namespace Core.Networking
         public override void OnConnectedToMaster()
         {
             base.OnConnectedToMaster();
+            PhotonNetwork.NickName = DataProvider.GetPlayerName();
             PhotonNetwork.JoinLobby(customLobby);
         }
 

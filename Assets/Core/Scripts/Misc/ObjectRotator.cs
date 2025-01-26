@@ -5,7 +5,7 @@ namespace Core.Misc
 {
     public class ObjectRotator : MonoBehaviour
     {
-        [SerializeField] private float rotateSpeed;
+        [SerializeField] private float rotateSpeed = 30f;
 
         public void Update()
         {

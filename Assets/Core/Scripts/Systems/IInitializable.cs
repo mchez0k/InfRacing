@@ -1,9 +1,12 @@
 namespace Core.Systems
 {
+    /// <summary>
+    /// Interface for objects that require initialization before use.
+    /// </summary>
     public interface IInitializable
     {
         /// <summary>
-        /// Field signal about Init
+        /// Gets the initialization state of the object.
         /// </summary>
         public bool IsInitialized { get; }
 
@@ -12,5 +15,4 @@ namespace Core.Systems
         /// </summary>
         public void Initialize();
     }
-
 }
