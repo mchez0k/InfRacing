@@ -5,7 +5,8 @@ using Core.Systems;
 using UnityEngine.Events;
 using Core.UI;
 using System.Collections.Generic;
-using ExitGames.Client.Photon;
+using System.Collections;
+using UnityEngine.SceneManagement;
 namespace Core.Networking
 {
     /// <summary>
@@ -45,8 +46,6 @@ namespace Core.Networking
             base.OnRoomListUpdate(roomList);
 
             UpdateOnlineInfo();
-
-            Debug.Log($"{roomList.Count} - {PhotonNetwork.CountOfPlayers}");
         }
 
         public override void OnJoinedRoom()
@@ -57,6 +56,8 @@ namespace Core.Networking
 
             var panel = uiManager.GetPanel<RoomPanel>();
             panel.UpdateRoom(room);
+            if (PhotonNetwork.IsMasterClient)
+                panel.OnStartPressed.AddListener(StartGame);
             panel.OnLeavePressed.AddListener(LeaveRoom);
 
             Debug.Log($"Joined Room {room.Name} with {room.PlayerCount} players");
@@ -99,6 +100,30 @@ namespace Core.Networking
         {
             Debug.Log("Left the room.");
             uiManager.Open(typeof(MenuPanel), false);
+        }
+        private void StartGame()
+        {
+            Debug.Log("Starting game");
+            photonView.RPC("RPC_LoadLevel", RpcTarget.All, 2);
+        }
+
+        [PunRPC]
+        private void RPC_LoadLevel(int sceneIndex)
+        {
+            StartCoroutine(LoadSceneAsync(sceneIndex));
+        }
+
+        private IEnumerator LoadSceneAsync(int sceneIndex)
+        {
+            uiManager.Open(typeof(LoadingPanel));
+
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
+
+            while (!asyncLoad.isDone)
+            {
+                uiManager.GetPanel<LoadingPanel>().UpdateProgress(asyncLoad.progress);
+                yield return null;
+            }
         }
 
         private void LeaveRoom()

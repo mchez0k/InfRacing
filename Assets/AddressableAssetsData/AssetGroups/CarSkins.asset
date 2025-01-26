@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: CarSkins
+  m_EditorClassIdentifier: 
+  m_GroupName: CarSkins
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 13a40363ef47205499a586b95edaa23b
+  m_SerializeEntries:
+  - m_GUID: 0cd8815a1ce46844b92fa77324f1f0e3
+    m_Address: YellowSkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21650591fb6286b4293be426dc0621bf
+    m_Address: RedSkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d52757b5149f364db7b49be4d33c5b2
+    m_Address: BlueSkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccd77042b04a3d84b91af0d9d68ea643
+    m_Address: BlackSkin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7c1499bd5bf0dc5448d2d7fdc7cf0f81, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d2b1df760c9397545a989115e446ac0f, type: 2}
+    - {fileID: 11400000, guid: c94187c163556f54d8bea0e99d90530a, type: 2}

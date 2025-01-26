@@ -19,10 +19,11 @@ namespace Core.UI
         [SerializeField] private Button startGameButton;
         [SerializeField] private Button leaveRoomButton;
 
+        public UnityEvent OnStartPressed = new UnityEvent();
         public UnityEvent OnLeavePressed = new UnityEvent();
         public override void Initialize()
         {
-            //startGameButton.onClick.AddListener();
+            startGameButton.onClick.AddListener(StartGame);
             leaveRoomButton.onClick.AddListener(Leave);
         }
 
@@ -30,6 +31,11 @@ namespace Core.UI
         {
             UpdateRoomName(room);
             UpdatePlayers(room);
+        }
+
+        public void StartGame()
+        {
+            OnStartPressed.Invoke();
         }
 
         public void Leave()
@@ -41,6 +47,7 @@ namespace Core.UI
         {
             base.Open();
             var room = PhotonNetwork.CurrentRoom;
+            startGameButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
             UpdateRoom(room);
         }
 

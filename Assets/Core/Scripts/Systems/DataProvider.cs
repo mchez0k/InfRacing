@@ -20,10 +20,18 @@ namespace Core.Systems
                 PhotonNetwork.LocalPlayer.NickName = name;
                 SetPlayerName(name);
             }
+
+            if (!Data.HasKey(GameConstants.PLAYER_SKIN_SAVE_KEY))
+            {
+                SetCurrentSkin((int)ECarSkin.BlackSkin);
+            }
         }
 
         public static void SetPlayerName(string value) => Data.SetString(GameConstants.PLAYER_NICKNAME_SAVE_KEY, value);
         public static string GetPlayerName() => Data.GetString(GameConstants.PLAYER_NICKNAME_SAVE_KEY);
+
+        public static void SetCurrentSkin(int value) => Data.SetInt(GameConstants.PLAYER_SKIN_SAVE_KEY, value);
+        public static ECarSkin GetCurrentSkin() => (ECarSkin)Data.GetInt(GameConstants.PLAYER_SKIN_SAVE_KEY);
 
     }
 }
